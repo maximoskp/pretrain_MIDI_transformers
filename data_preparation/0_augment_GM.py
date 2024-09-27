@@ -2,7 +2,8 @@ from miditok.data_augmentation import augment_dataset
 import os
 from pathlib import Path
 
-prefix = '/media/datadisk/datasets/GiantMIDI-PIano'
+# prefix = '/media/datadisk/datasets/GiantMIDI-PIano'
+prefix = '/media/maindisk/maximos/data/GiantMIDI-PIano/midis_v1.2'
 
 path_to_dataset = prefix
 midi_paths = Path(path_to_dataset)

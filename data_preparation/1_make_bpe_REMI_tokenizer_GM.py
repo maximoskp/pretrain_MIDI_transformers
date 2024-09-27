@@ -30,12 +30,13 @@ config = TokenizerConfig(**TOKENIZER_PARAMS)
 tokenizer = REMI(config)
 
 ### full dataset
-prefix = '/media/datadisk/datasets/GiantMIDI-PIano/aug'
+# prefix = '/media/datadisk/datasets/GiantMIDI-PIano/aug'
+prefix = '/media/maindisk/maximos/data/GiantMIDI-PIano/midis_v1.2/aug/midis'
 path_to_dataset = prefix
 path_to_tokens = f'{prefix}_REMI_noBPE/'
 path_to_tokens_bpe = f'{prefix}_REMI_BPE/'
 path_to_tokenizer_config = f'{prefix}_REMI_BPE_tokenizer.json'
-
+path_to_tokenizer_pretrained = f'{prefix}_REMI_BPE_tokenizer'
 midi_paths = Path(path_to_dataset)
 
 train_iterator = TokTrainingIterator(
@@ -51,3 +52,4 @@ tokenizer.train(
 
 # Save tokenizer
 tokenizer.save_params(Path(path_to_tokenizer_config))
+tokenizer.save_pretrained(path_to_tokenizer_pretrained)
