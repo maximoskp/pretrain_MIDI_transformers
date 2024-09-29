@@ -6,12 +6,12 @@ PITCH_RANGE = (21, 109)
 BEAT_RES = {(0, 1): 8, (1, 2): 4, (2, 4): 2, (4, 8): 1}
 NUM_VELOCITIES = 24
 SPECIAL_TOKENS = ["PAD", "MASK", "BOS", "EOS"]
-USE_CHORDS = True # changed
+USE_CHORDS = False
 USE_RESTS = False
-USE_TEMPOS = True # changed
+USE_TEMPOS = True
 USE_TIME_SIGNATURE = False
 USE_PROGRAMS = False
-NUM_TEMPOS = 32
+NUM_TEMPOS = 15
 TEMPO_RANGE = (50, 200)  # (min_tempo, max_tempo)
 TOKENIZER_PARAMS = {
     "pitch_range": PITCH_RANGE,
