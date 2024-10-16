@@ -35,7 +35,9 @@ for i in tqdm(range(len(midi_files))):
     try:
         t = tokenizer(file_path)
         with open(sentences_file_path, 'a', encoding='utf-8') as the_file:
-            the_file.write(' '.join(t[0].tokens) + '\n')
+            tok_sentence = ' '.join(t[0].tokens)
+            # replace '.' with 'x'
+            the_file.write( tok_sentence.replace('.', 'x') + '\n')
     except:
         print('ERROR with ', midi_files[i])
         with open(error_log_file_path, 'a') as the_file:

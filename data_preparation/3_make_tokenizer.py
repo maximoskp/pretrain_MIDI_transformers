@@ -1,26 +1,35 @@
 from tokenizers import Tokenizer
-from tokenizers.models import BPE
-from tokenizers.trainers import BpeTrainer
+from tokenizers.models import WordLevel
+from tokenizers.trainers import WordLevelTrainer
+from tokenizers.pre_tokenizers import Whitespace
+from tokenizers.normalizers import Lowercase, NFD, StripAccents
+from tokenizers import normalizers
+from transformers import RobertaTokenizerFast
 
-# Initialize the BPE tokenizer
-tokenizer = Tokenizer(BPE(unk_token="[UNK]"))
+# Initialize the tokenizer with the WordLevel model
+tokenizer = Tokenizer(WordLevel(unk_token="[UNK]"))
 
-# Define a trainer with vocab size and other parameters
-trainer = BpeTrainer(vocab_size=1000, min_frequency=2, special_tokens=["[UNK]", "[CLS]", "[SEP]", "[PAD]", "[MASK]"])
+# Set normalizers (optional)
+tokenizer.normalizer = normalizers.Sequence([NFD(), Lowercase(), StripAccents()])
 
+# Use Whitespace pre-tokenizer to split by whitespace
+tokenizer.pre_tokenizer = Whitespace()
+
+# Initialize the trainer, without specifying vocab_size
+trainer = WordLevelTrainer(
+    special_tokens=["<unk>", "<s>", "</s>", "<pad>", "<mask>"] # for roberta
+)
+
+# Prepare your dataset
 sentences_file_path = '../data/midi_sentences.txt'
+files = [sentences_file_path]
 
-# Open and read the text file
-with open(sentences_file_path, 'r', encoding='utf-8') as file:
-    lines = file.readlines()
+# Train the tokenizer (vocab_size will be inferred from the data)
+tokenizer.train(files, trainer)
 
-# Remove trailing newline characters if any
-corpus = [line.strip() for line in lines]
-print('num sentences: ', len(corpus))
+# Save the tokenizer
+tokenizer.save("../data/midi_wordlevel_tokenizer.json")
 
-
-# Train the tokenizer on the pre-tokenized corpus
-tokenizer.train_from_iterator(corpus, trainer=trainer)
-
-# Save the tokenizer to a directory
-tokenizer.save_pretrained("../data/midi_tokenizer")
+# save the roberta tokenizer
+wrapped_tokenizer = RobertaTokenizerFast(tokenizer_object=tokenizer)
+wrapped_tokenizer.save_pretrained('../data/midi_wordlevel_tokenizer')
