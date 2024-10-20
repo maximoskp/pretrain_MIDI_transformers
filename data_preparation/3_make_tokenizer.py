@@ -9,9 +9,6 @@ from transformers import RobertaTokenizerFast
 # Initialize the tokenizer with the WordLevel model
 tokenizer = Tokenizer(WordLevel(unk_token="[UNK]"))
 
-# Set normalizers (optional)
-tokenizer.normalizer = normalizers.Sequence([NFD(), Lowercase(), StripAccents()])
-
 # Use Whitespace pre-tokenizer to split by whitespace
 tokenizer.pre_tokenizer = Whitespace()
 
